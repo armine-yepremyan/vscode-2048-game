@@ -1,0 +1,228 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 8px;
+  overflow: hidden;
+}
+
+#head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+#container {
+  position: relative;
+  background-color: #faf8ef;
+  width: 337px;
+  height: 430px;
+  margin: 0 auto;
+  padding: 15px 40px;
+  margin-top: 40px;
+}
+
+.title {
+  display: inline;
+  color: #776e65;
+  font-size: 5.6rem;
+  line-height: 6.4rem;
+  letter-spacing: 1.6px;
+}
+
+#score {
+  position: relative;
+  display: inline-block;
+  font-size: 1.6rem;
+  background-color: #bbada0;
+  height: 40px;
+  margin: 4px 3.2px;
+  border-radius: 2.4px;
+  line-height: 5.6rem;
+  padding: 0 16px;
+  font-weight: bold;
+  color: #fff;
+}
+
+#score::after {
+  content: "SCORE";
+  position: absolute;
+  transform: translateX(-50%);
+  color: #eee4de;
+  font-weight: bold;
+  font-size: 0.8rem;
+  line-height: 2.4rem;
+  left: 50%;
+}
+
+button {
+  box-sizing: content-box;
+  background-color: #8f7a66;
+  outline: none;
+  border-radius: 2.4px;
+  width: 74.4px;
+  height: 24px;
+  padding: 4px;
+  font-size: 1.28rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+  transition: 0.3s;
+}
+
+button:hover {
+  scale: 1.1;
+}
+
+#restart {
+  width: 40px;
+  display: block;
+  margin-left: auto;
+}
+
+#board {
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 8px;
+  column-gap: 8px;
+  width: 336px;
+  height: 336px;
+  box-sizing: border-box;
+  background-color: #bbada0;
+  border-radius: 4px;
+  margin: 16px 0;
+  overflow: hidden;
+  padding: 8px;
+  color: #fff;
+}
+
+.item {
+  background-color: #cdc1b4;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 74.4px;
+  font-size: 3.84rem;
+  font-weight: bold;
+}
+
+.mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: -4;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+.gameover {
+  width: 100%;
+  height: 100%;
+  font-size: 4rem;
+  position: absolute;
+  z-index: 100;
+  color: #776f65;
+  font-weight: bold;
+  text-align: center;
+  line-height: 320px;
+}
+
+#again {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 224px;
+  z-index: 100;
+}
+
+.newTile {
+  width: 74.4px;
+  height: 74.4px;
+  transition: transform 200ms ease-in, visibility 5s linear 136ms;
+  transform: scale(0);
+  position: absolute;
+  color: #fff;
+}
+
+.mergeTile {
+  width: 74.4px;
+  height: 74.4px;
+  transform: scale(0);
+  position: absolute;
+  transition: transform 112ms cubic-bezier(0, .2, 0, 1.5), visibility 5ms linea 160ms;
+  color: #fff;
+}
+
+.moveTile {
+  width: 74.4px;
+  height: 74.4px;
+  color: #fff;
+  position: absolute;
+  transition: left 80ms ease-in, top 80ms ease-in, visibility 5ms linear 80ms;
+}
+
+.scoreAdd {
+  position: absolute;
+  color: #000;
+  font-size: 0.48rem;
+  font-weight: bold;
+  transition: all 0.8s ease-out;
+}
+
+.item[data-value="2"] {
+  content: '2';
+  background-color: #eee4da;
+  color: #776e65;
+}
+
+.item[data-value="4"] {
+  background-color: #ede0c8;
+  color: #776e65;
+}
+
+.item[data-value="8"] {
+  background-color: #f2b179;
+}
+
+.item[data-value="16"] {
+  background-color: #f59663;
+}
+
+.item[data-value="32"] {
+  background-color: #f67c5f;
+}
+
+.item[data-value="64"] {
+  background-color: #f65e3b;
+}
+
+.item[data-value="128"] {
+  background-color: #edcf72;
+  font-size: 4rem;
+}
+
+.item[data-value="256"] {
+  background-color: #edcc61;
+  font-size: 4rem;
+}
+
+.item[data-value="512"] {
+  background-color: #edc850;
+  font-size: 4rem;
+}
+
+.item[data-value="1024"] {
+  background-color: #edc53f;
+  font-size: 3.5rem;
+}
+
+.item[data-value="2048"] {
+  background-color: #edc22e;
+  font-size: 3.5rem;
+}

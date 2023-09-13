@@ -1,0 +1,74 @@
+{
+  "name": "2048",
+  "displayName": "2048",
+  "description": "VSCode 2048 Game",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "2048.start",
+        "category": "2048",
+        "title": "Hello World",
+        "icon": "$(empty-window)",
+        "shortTitle": "New"
+      },
+      {
+        "command": "2048.restart",
+        "category": "2048",
+        "title": "Restart",
+        "icon": "$(play)",
+        "shortTitle": "Restart"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "2048.restart",
+          "group": "navigation",
+          "when": "view == 2048.view"
+        }
+      ]
+  
+    },
+    "views": {
+			"explorer": [
+				{
+					"type": "webview",
+					"id": "2048.view",
+					"name": "2048",
+					"visibility": "visible",
+					"contextualTitle": "2048",
+					"initialSize": 500
+				}
+			]
+		}
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.82.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}
