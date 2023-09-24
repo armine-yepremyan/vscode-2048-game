@@ -2,7 +2,7 @@
   "name": "2048",
   "displayName": "2048",
   "description": "VSCode 2048 Game",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "armine-yepremyan",
   "license": "MIT",
   "engines": {
@@ -21,6 +21,7 @@
     "Other"
   ],
   "activationEvents": [],
+  "icon": "assets/logo_2048.png",
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
