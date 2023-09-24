@@ -2,10 +2,21 @@
   "name": "2048",
   "displayName": "2048",
   "description": "VSCode 2048 Game",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "publisher": "armine-yepremyan",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.82.0"
   },
+  "keywords": [
+    "2048",
+    "game",
+    "vscode"
+  ],
+  "repository": {
+		"url": "https://github.com/armine-yepremyan/vscode-2048-game",
+		"type": "github"
+	},
   "categories": [
     "Other"
   ],
@@ -16,7 +27,7 @@
       {
         "command": "2048.start",
         "category": "2048",
-        "title": "Hello World",
+        "title": "2048",
         "icon": "$(empty-window)",
         "shortTitle": "New"
       },
@@ -24,7 +35,7 @@
         "command": "2048.restart",
         "category": "2048",
         "title": "Restart",
-        "icon": "$(play)",
+        "icon": "$(refresh)",
         "shortTitle": "Restart"
       }
     ],
