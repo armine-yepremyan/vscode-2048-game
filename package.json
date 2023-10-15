@@ -2,7 +2,7 @@
   "name": "2048",
   "displayName": "2048",
   "description": "VSCode 2048 Game",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "armine-yepremyan",
   "license": "MIT",
   "engines": {
