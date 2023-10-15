@@ -14,6 +14,12 @@ export function activate(context: vscode.ExtensionContext) {
 			provider.restart();
 		})
 	);
+	
+	context.subscriptions.push(
+		vscode.commands.registerCommand('2048.reset', () => {
+			provider.reset();
+		})
+	);
 }
 
 class GameProvider implements vscode.WebviewViewProvider {
@@ -66,7 +72,10 @@ class GameProvider implements vscode.WebviewViewProvider {
 						<h1 class="title">2048</h1>
 						<div id="scroreBar">
 							<div id="score">0</div>
-						</div>        
+						</div>
+						<div id="bestScroreBar">
+							<div id="bestScore">0</div>
+						</div>     
 					</div>
 					<div id="board">
 						<div class="item"></div>
@@ -96,8 +105,17 @@ class GameProvider implements vscode.WebviewViewProvider {
 
 	public async restart(): Promise<void> {
 		if (this.view) {
+			await this.view?.webview.postMessage({ type: 'restart' })
 			this.view.webview.html = this.getHtmlWebview(this.view.webview);
+			
 		}
+	}
+
+	public async reset(): Promise<void> {
+		if (this.view) {
+			await this.view?.webview.postMessage({ type: 'reset' })
+			this.view.webview.html = this.getHtmlWebview(this.view.webview);			
+		}		
 	}
 }
 

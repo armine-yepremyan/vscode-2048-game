@@ -1,8 +1,11 @@
 # Change Log
 
-All notable changes to the "2048" extension will be documented in this file.
+### 1.0.2 -15 October 2023
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Added WASD keys
+- Best score history
+- Reset game history
 
+### 1.0.1 - 24 September 2023
 
 - App logo

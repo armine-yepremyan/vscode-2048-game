@@ -38,12 +38,24 @@
         "title": "Restart",
         "icon": "$(refresh)",
         "shortTitle": "Restart"
+      },
+      {
+        "command": "2048.reset",
+        "category": "2048",
+        "title": "Reset history",
+        "icon": "$(history)",
+        "shortTitle": "Reset"
       }
     ],
     "menus": {
       "view/title": [
         {
           "command": "2048.restart",
+          "group": "navigation",
+          "when": "view == 2048.view"
+        },
+        {
+          "command": "2048.reset",
           "group": "navigation",
           "when": "view == 2048.view"
         }

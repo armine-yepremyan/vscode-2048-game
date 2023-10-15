@@ -3,6 +3,8 @@ const defaultTraversalY = [0, 1, 2, 3];
 let head = document.getElementById("head");
 let scoreBar = document.getElementById("scoreBar");
 let scoreItem = document.getElementById("score");
+let bestScoreBar = document.getElementById("bestScoreBar");
+let bestScoreItem = document.getElementById("bestScore");
 let container = document.getElementById("container");
 let currentGame = null;
 let mask = document.querySelectorAll(".mask, .gameover, #again");
@@ -22,7 +24,6 @@ const newGame = () => {
   currentGame.init();
 }
 
-// againBtn.onclick = newGame;
 
 class Game {
   static dir = [
@@ -36,13 +37,51 @@ class Game {
     this.item = document.querySelectorAll(".item");
     this.tile = new Array(4);
     this.score = 0;
+    this.bestResult = localStorage.getItem("bestResult") || 0;
+    this.setBestResult()
+  }
+
+  static getScore() {
+    return this.score
+  }
+
+  setBestResult() {
+    bestScoreItem.innerHTML = this.bestResult;
+    let item = document.createElement("div");
+    item.className = "bestScoreAdd";
+    item.innerHTML = `${this.bestResult}`;
+    item.style.top = 60 + "px";
+    item.style.right = 130 + "px";
+    container.append(item);
+
+    setTimeout(() => {
+      item.style.top = -100 + "px";
+      item.style.opacity = 0;
+    }, 0);
+
+    setTimeout(() => {
+      item.remove()
+    }, 2000);
+  }
+
+  updateBestResult() {
+    if (this.score > this.bestResult) {
+      localStorage.setItem("bestResult", this.score)
+    }
+    return this.score > this.bestResult
+  }
+
+  resetGameHistory() {
+    localStorage.removeItem("bestResult")
+    this.bestResult = 0
+    this.setBestResult()
   }
 
   clear = () => {
     location.reload();
   }
 
-  init = () => {
+  init() {
     let promise = new Promise(resolve => {
       for (let i = 0; i < 4; ++i) {
         this.tile[i] = new Array(4).fill(0);
@@ -51,10 +90,10 @@ class Game {
     });
     promise
       .then(this.createNewTile(2))
-      .then(() => document.addEventListener("keydown", this.onKeyDown));
+      .then(() => document.addEventListener("keydown", onKeyDown));
   }
 
-  createNewTile = (num = 1) => {
+  createNewTile(num = 1) {
     for (let i = 0; i < num; ++i) {
       let rand = Math.floor(Math.random() * 16);
       let x = Math.floor(rand / 4);
@@ -72,7 +111,7 @@ class Game {
     }
   }
 
-  addTile = (tile, delay, merged, created = false) => {
+  addTile(tile, delay, merged, created = false) {
     let { x, y, val } = tile;
     let coordinate = getCoordinate(this.item[x * 4 + y]);
     let newTile = null;
@@ -99,7 +138,7 @@ class Game {
 
   }
 
-  findFinalPosition = (n, current) => {
+  findFinalPosition(n, current) {
     let res = current;
     while (current.x >= 0 && current.x <= 3 && current.y >= 0 && current.y <= 3) {
       res = current;
@@ -122,7 +161,7 @@ class Game {
     }
   }
 
-  move = (oldTile, newTile) => {
+  move(oldTile, newTile) {
     let oldIndex = oldTile.x * 4 + oldTile.y;
     let newIndex = newTile.x * 4 + newTile.y;
     let merged = oldTile.val != newTile.val;
@@ -148,7 +187,7 @@ class Game {
 
   }
 
-  updateScore = (score) => {
+  updateScore(score) {
     this.score += score;
     scoreItem.innerHTML = this.score;
     let item = document.createElement("div");
@@ -219,7 +258,7 @@ class Game {
     return changed;
   }
 
-  isNoEmptySpace = () => {
+  isNoEmptySpace() {
     for (let row of this.tile) {
       for (let i of row) {
         if (i == 0) {
@@ -230,7 +269,7 @@ class Game {
     return true
   }
 
-  canMove = () => {
+  canMove() {
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (
@@ -244,49 +283,14 @@ class Game {
     return false
   }
 
-  endGame = () => {
-    document.removeEventListener("keydown", this.onKeyDown);
+  endGame() {
+    document.removeEventListener("keydown", onKeyDown);
     mask.forEach((i) => {
       i.hidden = false;
     })
   }
 
-  onKeyDown = (event) => {
-    let dir = 0;
-    event.preventDefault();
-    switch(event.key) {
-      case "ArrowUp":
-        dir = 0;
-        break;
-      case "ArrowRight":
-        dir = 1;
-        break;
-      case "ArrowDown":
-        dir = 2;  
-        break;
-      case "ArrowLeft":
-        dir = 3;
-        break;
-      default:
-        return;
-    }
-    let traversal = {
-      x: [...defaultTraversalX],
-      y: [...defaultTraversalY]
-    };
-    clearAnimatedItem();
-
-    let promise = currentGame.moveTile(dir, traversal);
-
-    promise.then(moved => {
-      if (moved && !currentGame.isNoEmptySpace()) {
-        currentGame.createNewTile();
-      }
-      if (currentGame.isNoEmptySpace() && !currentGame.canMove()) {
-        currentGame.endGame();
-      }
-    })
-  }
+  
 }
 
 const getCoordinate = (item) => {
@@ -305,11 +309,63 @@ const clearAnimatedItem = () => {
 
 }
 
-window.addEventListener('message', event => {
+window.addEventListener('message', async (event) => {
+
   const message = event.data;
   switch(message.type) {
-    case "restart": {
-      newGame()
-    }
+    case "restart":
+      if (currentGame.updateBestResult()) {
+        currentGame.setBestResult()
+      }
+      break;
+    case "reset":
+      currentGame.resetGameHistory()
+      break;
+
   }
 })
+
+const onKeyDown = (event) => {
+  let dir = 0;
+  event.preventDefault();
+  console.log("event.key ", event.key)
+  switch(event.key) {
+    case "w":
+    case "ArrowUp":
+      dir = 0;
+      break;
+    case "d":
+    case "ArrowRight":
+      dir = 1;
+      break;
+    case "s":
+    case "ArrowDown":
+      dir = 2;  
+      break;
+    case "a":
+    case "ArrowLeft":
+      dir = 3;
+      break;
+    default:
+      return;
+  }
+  let traversal = {
+    x: [...defaultTraversalX],
+    y: [...defaultTraversalY]
+  };
+  clearAnimatedItem();
+
+  let promise = currentGame.moveTile(dir, traversal);
+
+  promise.then(moved => {
+    if (moved && !currentGame.isNoEmptySpace()) {
+      currentGame.createNewTile();
+    }
+    if (currentGame.isNoEmptySpace() && !currentGame.canMove()) {
+      if (currentGame.updateBestResult()) {
+        currentGame.setBestResult()
+      }
+      currentGame.endGame();
+    }
+  })
+}

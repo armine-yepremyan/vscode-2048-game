@@ -57,6 +57,31 @@ html {
   left: 50%;
 }
 
+#bestScore {
+  position: relative;
+  display: inline-block;
+  font-size: 1.6rem;
+  background-color: #7a8628;
+  height: 40px;
+  margin: 4px 3.2px;
+  border-radius: 2.4px;
+  line-height: 5.6rem;
+  padding: 0 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+#bestScore::after {
+  content: "BEST";
+  position: absolute;
+  transform: translateX(-50%);
+  color: #eee4de;
+  font-weight: bold;
+  font-size: 0.8rem;
+  line-height: 2.4rem;
+  left: 50%;
+}
+
 button {
   box-sizing: content-box;
   background-color: #8f7a66;
