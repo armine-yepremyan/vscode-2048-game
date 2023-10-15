@@ -1,3 +1,5 @@
+const vscode = acquireVsCodeApi();
+
 const defaultTraversalX = [0, 1, 2, 3];
 const defaultTraversalY = [0, 1, 2, 3];
 let head = document.getElementById("head");
@@ -17,13 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
   currentGame.init();
 })
 
+const cache = {
+  set: (state) => vscode.setState(state),
+  get: () => vscode.getState(),
+}
+
 const newGame = () => {
   currentGame.clear();
   currentGame = null;
   currentGame = new Game();
   currentGame.init();
 }
-
 
 class Game {
   static dir = [
@@ -37,7 +43,6 @@ class Game {
     this.item = document.querySelectorAll(".item");
     this.tile = new Array(4);
     this.score = 0;
-    this.bestResult = localStorage.getItem("bestResult") || 0;
     this.setBestResult()
   }
 
@@ -46,10 +51,11 @@ class Game {
   }
 
   setBestResult() {
-    bestScoreItem.innerHTML = this.bestResult;
+    const bestResult = cache.get().bestResult
+    bestScoreItem.innerHTML = bestResult;
     let item = document.createElement("div");
     item.className = "bestScoreAdd";
-    item.innerHTML = `${this.bestResult}`;
+    item.innerHTML = `${bestResult}`;
     item.style.top = 60 + "px";
     item.style.right = 130 + "px";
     container.append(item);
@@ -65,15 +71,15 @@ class Game {
   }
 
   updateBestResult() {
-    if (this.score > this.bestResult) {
-      localStorage.setItem("bestResult", this.score)
+    const bestResult = cache.get().bestResult
+    if (this.score > bestResult) {
+      cache.set({ bestResult: this.score })
     }
-    return this.score > this.bestResult
+    return this.score > bestResult
   }
 
   resetGameHistory() {
-    localStorage.removeItem("bestResult")
-    this.bestResult = 0
+    cache.set({ bestResult: 0 })
     this.setBestResult()
   }
 
@@ -309,17 +315,20 @@ const clearAnimatedItem = () => {
 
 }
 
-window.addEventListener('message', async (event) => {
+window.addEventListener('message', (event) => {
 
   const message = event.data;
   switch(message.type) {
     case "restart":
-      if (currentGame.updateBestResult()) {
+      const update = currentGame.updateBestResult()
+      if (update) {
         currentGame.setBestResult()
       }
+      vscode.postMessage({ type: 'ready' });
       break;
     case "reset":
       currentGame.resetGameHistory()
+      vscode.postMessage({ type: 'ready' });
       break;
 
   }
@@ -328,7 +337,6 @@ window.addEventListener('message', async (event) => {
 const onKeyDown = (event) => {
   let dir = 0;
   event.preventDefault();
-  console.log("event.key ", event.key)
   switch(event.key) {
     case "w":
     case "ArrowUp":

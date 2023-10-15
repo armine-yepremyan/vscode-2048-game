@@ -103,17 +103,32 @@ class GameProvider implements vscode.WebviewViewProvider {
 		</html>`;
 	}
 
+	private messageHandler(resolve: () => void) {
+		return (message: { type: string; }) => {
+			if (message.type === 'ready') {
+				resolve();
+			}
+		}
+	};
+
 	public async restart(): Promise<void> {
 		if (this.view) {
-			await this.view?.webview.postMessage({ type: 'restart' })
+			const webviewReadyPromise = new Promise<void>((resolve) => {
+				this.view?.webview.onDidReceiveMessage(this.messageHandler(resolve));
+				this.view?.webview.postMessage({ type: 'restart' });
+			});
+			await webviewReadyPromise;
 			this.view.webview.html = this.getHtmlWebview(this.view.webview);
-			
 		}
 	}
 
 	public async reset(): Promise<void> {
 		if (this.view) {
-			await this.view?.webview.postMessage({ type: 'reset' })
+			const webviewReadyPromise = new Promise<void>((resolve) => {
+				this.view?.webview.onDidReceiveMessage(this.messageHandler(resolve));
+				this.view?.webview.postMessage({ type: 'reset' });
+			});
+			await webviewReadyPromise;
 			this.view.webview.html = this.getHtmlWebview(this.view.webview);			
 		}		
 	}
