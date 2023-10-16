@@ -62,17 +62,26 @@
       ]
   
     },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "2048-explorer",
+          "title": "2048",
+          "icon": "assets/2048_logo.svg"
+        }
+      ]
+    },
     "views": {
-			"explorer": [
-				{
+      "2048-explorer": [
+        {
 					"type": "webview",
 					"id": "2048.view",
 					"name": "2048",
 					"visibility": "visible",
 					"contextualTitle": "2048",
-					"initialSize": 500
+          "initialSize": 500
 				}
-			]
+      ]
 		}
   },
   "scripts": {
