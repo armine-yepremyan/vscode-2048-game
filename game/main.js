@@ -51,7 +51,7 @@ class Game {
   }
 
   setBestResult() {
-    const bestResult = cache.get().bestResult
+    const bestResult = cache.get()?.bestResult || 0
     bestScoreItem.innerHTML = bestResult;
     let item = document.createElement("div");
     item.className = "bestScoreAdd";
@@ -71,7 +71,7 @@ class Game {
   }
 
   updateBestResult() {
-    const bestResult = cache.get().bestResult
+    const bestResult = cache.get()?.bestResult
     if (this.score > bestResult) {
       cache.set({ bestResult: this.score })
     }
@@ -315,7 +315,7 @@ const clearAnimatedItem = () => {
 
 }
 
-window.addEventListener('message', (event) => {
+window.addEventListener('message', async (event) => {
 
   const message = event.data;
   switch(message.type) {
