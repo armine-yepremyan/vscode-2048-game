@@ -71,7 +71,7 @@ class Game {
   }
 
   updateBestResult() {
-    const bestResult = cache.get()?.bestResult
+    const bestResult = cache.get()?.bestResult || 0
     if (this.score > bestResult) {
       cache.set({ bestResult: this.score })
     }

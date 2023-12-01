@@ -1,4 +1,7 @@
 # Change Log
+### 1.0.4 - 1 December 2023
+
+- Bug fix
 
 ### 1.0.3 - 1 December 2023
 
